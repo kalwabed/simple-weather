@@ -3,15 +3,21 @@ import { WiCloud, WiWindy } from 'react-icons/wi'
 
 import { getWeatherIcon } from '../lib/api'
 import { windDirection } from '../lib/fn'
-import { useAppContext } from '../lib/store'
 import { List } from '../lib/types'
 
 const DailyForecast = ({ weather }: { weather: List }) => {
   if (!weather) return null
 
   return (
-    <Flex justify="space-between" alignItems="center" border="1px solid" borderColor="gray.400" p={4}>
-      <Flex gap={16} alignItems="center">
+    <Flex
+      justify="space-between"
+      flexDir={['column', 'row']}
+      alignItems="center"
+      border="1px solid"
+      borderColor="gray.400"
+      p={4}
+    >
+      <Flex gap={16} alignItems="center" flexDir={['column', 'row']}>
         <Text>{new Intl.DateTimeFormat('id', { day: 'numeric', month: 'short' }).format(weather.dt * 1000)}</Text>
         <Text>{new Intl.DateTimeFormat('id', { timeStyle: 'short' }).format(weather.dt * 1000)}</Text>
         <Flex gap={2} alignItems="center">

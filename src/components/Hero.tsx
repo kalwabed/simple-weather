@@ -13,7 +13,6 @@ const Hero = ({ weather }: { weather: CurrentWeather }) => {
       color="white"
       p={8}
       w="full"
-      maxW="container.lg"
       m="12px auto"
       rounded="md"
       shadow="md"
@@ -28,7 +27,7 @@ const Hero = ({ weather }: { weather: CurrentWeather }) => {
           pada {new Intl.DateTimeFormat('id', { timeStyle: 'short' }).format(weather.dt * 1000)}{' '}
           {timezoneShift(weather?.timezone)}
         </Text>
-        <Heading as="h1" fontSize="6xl">
+        <Heading as="h1" fontSize="8xl">
           {Math.floor(weather?.main.temp)}&deg;
         </Heading>
         <Text as="b" fontSize="xl">

@@ -35,9 +35,8 @@ function App() {
       <Grid
         gridTemplateRows="repeat(auto,1fr)"
         w="full"
-        maxW="container.xl"
         m="20px auto"
-        bgColor="gray.300"
+        bgColor="gray.200"
         rounded="md"
         border="1px solid"
         borderColor="gray.400"
