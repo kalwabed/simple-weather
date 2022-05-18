@@ -1,57 +1,4 @@
-export interface CurrentWeather {
-  coord: Coord
-  weather: Weather[]
-  base: string
-  main: Main
-  visibility: number
-  wind: Wind
-  clouds: Clouds
-  dt: number
-  sys: Sys
-  timezone: number
-  id: number
-  name: string
-  cod: number
-}
-
-export interface Coord {
-  lon: number
-  lat: number
-}
-
-export interface Weather {
-  id: number
-  main: string
-  description: string
-  icon: string
-}
-
-export interface Main {
-  temp: number
-  feels_like: number
-  temp_min: number
-  temp_max: number
-  pressure: number
-  humidity: number
-}
-
-export interface Wind {
-  speed: number
-  deg: number
-}
-
-export interface Clouds {
-  all: number
-}
-
-export interface Sys {
-  type: number
-  id: number
-  message: number
-  country: string
-  sunrise: number
-  sunset: number
-}
+import { CurrentWeather, DailyForecasts } from './types'
 
 export async function getCurrentWeather(lat: number, lon: number): Promise<CurrentWeather> {
   const response = await fetch(
@@ -60,4 +7,17 @@ export async function getCurrentWeather(lat: number, lon: number): Promise<Curre
     }`
   )
   return response.json()
+}
+
+export async function getDailyForecast(lat: number, lon: number): Promise<DailyForecasts> {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=10&lang=id&units=metric&appid=${
+      import.meta.env.VITE_APP_WEATHER_API_KEY
+    }`
+  )
+  return response.json()
+}
+
+export function getWeatherIcon(iconCode: string): string {
+  return `http://openweathermap.org/img/wn/${iconCode}@2x.png`
 }
