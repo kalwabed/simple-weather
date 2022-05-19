@@ -14,8 +14,11 @@ function App() {
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
       async position => {
-        const currentWeather = await getCurrentWeatherByCoord(position.coords.latitude, position.coords.longitude)
-        const daily = await getDailyForecastByCoord(position.coords.latitude, position.coords.longitude)
+        const [lat, lon] = [position.coords.latitude, position.coords.longitude]
+        const [currentWeather, daily] = await Promise.all([
+          getCurrentWeatherByCoord(lat, lon),
+          getDailyForecastByCoord(lat, lon)
+        ])
 
         setDailyForecast(daily)
         setCurrentWeather(currentWeather)
