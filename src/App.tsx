@@ -1,27 +1,24 @@
-import { Grid } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import DailyForecast from './components/DailyForecast'
+import { Grid, Spinner } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
+import DailyForecast from './components/DailyForecast'
 import Hero from './components/Hero'
 import Layout from './components/Layout'
-import { getCurrentWeather, getDailyForecast } from './lib/api'
+import Search from './components/Search'
+import { getCurrentWeatherByCoord, getDailyForecastByCoord } from './lib/api'
 import { useAppContext } from './lib/store'
-import { CurrentWeather, DailyForecasts } from './lib/types'
 
 function App() {
-  const [weather, setWeather] = useState<CurrentWeather>()
-  const [dailyForecast, setDailyForecast] = useState<DailyForecasts>()
-  const { setCurrentWeather } = useAppContext()
+  const { currentWeather, setCurrentWeather, setDailyForecast, dailyForecast } = useAppContext()
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
       async position => {
-        const currentWeather = await getCurrentWeather(position.coords.latitude, position.coords.longitude)
-        const daily = await getDailyForecast(position.coords.latitude, position.coords.longitude)
-        console.log(daily)
-        setCurrentWeather(currentWeather)
+        const currentWeather = await getCurrentWeatherByCoord(position.coords.latitude, position.coords.longitude)
+        const daily = await getDailyForecastByCoord(position.coords.latitude, position.coords.longitude)
+
         setDailyForecast(daily)
-        setWeather(currentWeather)
+        setCurrentWeather(currentWeather)
       },
       error => {
         console.error(error)
@@ -29,9 +26,18 @@ function App() {
     )
   }, [])
 
+  if (!currentWeather || !dailyForecast) {
+    return (
+      <Layout>
+        <Spinner size="xl" m="8px auto" />
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
-      <Hero weather={weather} />
+      <Search />
+      <Hero />
       <Grid
         gridTemplateRows="repeat(auto,1fr)"
         w="full"
@@ -42,7 +48,7 @@ function App() {
         borderColor="gray.400"
         shadow="md"
       >
-        {dailyForecast?.list.map(weather => (
+        {dailyForecast?.list?.map(weather => (
           <DailyForecast key={weather.dt} weather={weather} />
         ))}
       </Grid>

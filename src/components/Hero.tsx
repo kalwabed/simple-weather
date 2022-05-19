@@ -3,9 +3,11 @@ import { WiWindy, WiCloud } from 'react-icons/wi'
 
 import { getWeatherIcon } from '../lib/api'
 import { timezoneShift, windDirection } from '../lib/fn'
-import { CurrentWeather } from '../lib/types'
+import { useAppContext } from '../lib/store'
 
-const Hero = ({ weather }: { weather: CurrentWeather }) => {
+const Hero = () => {
+  const { currentWeather: weather } = useAppContext()
+
   return (
     <Flex
       justify="space-between"
